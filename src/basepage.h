@@ -18,6 +18,9 @@
 #include <Wt/WGroupBox>
 #include <Wt/WText>
 #include <Wt/WVBoxLayout>
+#include <string>
+#include "allbooks.h"
+#include <Wt/Dbo/Dbo>
 
 using namespace Wt;
 
@@ -27,9 +30,16 @@ class BasePage
 	WContainerWidget* _header;
 	WContainerWidget* _footer;
 	WContainerWidget* _sidebar;
+	WContainerWidget* _pagecontent;
 public:
 	BasePage(WContainerWidget*);
 	void printHeader();
+	void sidebar();
+	void footer();
+	void printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10);
+	void printTable();
+	void setContentText(std::string);
+	void clearContent();
 };
 
 #endif

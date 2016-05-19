@@ -5,6 +5,9 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WLink>
 #include <Wt/WText>
+#include "basepage.h"
+#include <Wt/Dbo/Dbo>
+#include <Wt/Dbo/backend/Sqlite3>
 
 using namespace Wt;
 
@@ -12,9 +15,18 @@ class App: public WApplication {
 private:
     std::string appName;
     WContainerWidget* _content;
+	BasePage *page;
+	void authors();
+	void typesOfBooks();
+	void rates();
+	Dbo::backend::Sqlite3 database;
+	//Dbo::Session session;
 public:
     App(const WEnvironment &env);
 	WContainerWidget* content();
+	~App();	
+protected:
+	virtual void onInternalPathChange();
 };
 
 #endif
