@@ -22,5 +22,5 @@ class AllBooks{
 		Dbo::field(a, mark,     "Mark");
 	  }
 };
-DBO_EXTERN_TEMPLATES(AllBooks);
+//DBO_EXTERN_TEMPLATES(AllBooks);
 #endif

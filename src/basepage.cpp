@@ -42,6 +42,7 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
 	setContentText("top10");
 	for (Dbo::collection<Dbo::ptr<AllBooks> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
 		Dbo::ptr<AllBooks> Book = *i;
+		//Wt::log("info") << "!!!"<< Book.get()->title;
 		_pagecontent->addWidget(new WText(WString::fromUTF8(Book.get()->title)));
 	}
 }

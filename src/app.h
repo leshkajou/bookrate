@@ -20,11 +20,12 @@ private:
 	void typesOfBooks();
 	void rates();
 	Dbo::backend::Sqlite3 database;
-	//Dbo::Session session;
+//	Dbo::Session session;
 public:
     App(const WEnvironment &env);
 	WContainerWidget* content();
-	~App();	
+	~App();
+	//Dbo::Session getSession();
 protected:
 	virtual void onInternalPathChange();
 };

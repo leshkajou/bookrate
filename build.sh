@@ -1,8 +1,8 @@
 #!/bin/sh
 echo Clearing
-#rm -rf build
+rm -rf build
 echo Making build dir...
-#mkdir build
+mkdir build
 cd build
 echo Running cmake...
 cmake ../src

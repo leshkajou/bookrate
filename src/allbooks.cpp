@@ -2,4 +2,4 @@
 
 #include <Wt/Dbo/Impl>
 
-DBO_INSTANTIATE_TEMPLATES(AllBooks);
+//DBO_INSTANTIATE_TEMPLATES(AllBooks);
