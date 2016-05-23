@@ -35,16 +35,16 @@ App::~App(){
 
 void App::rates(){
 		
+		
 		Dbo::Session session;
 		session.setConnection(database);
 		session.mapClass<AllBooks>("AllBooks");
 		Dbo::Transaction t(session);
 		Dbo::collection<Dbo::ptr<AllBooks> > top10 = session.find<AllBooks>();
-	//
+	//	
 		//Wt::log("info") << (*(i+1))->title;
         page->printTop10(top10);
-		t.commit();
-		
+		t.commit();	
 }
 
 void App::authors(){
