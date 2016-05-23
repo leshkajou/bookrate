@@ -15,6 +15,7 @@ App::App(const WEnvironment &env): WApplication(env), database(WApplication::ins
         page = new BasePage(content());
         page->printHeader();
         page->sidebar();
+		page->footer();
         useStyleSheet("templates/style.css");
         internalPathChanged().connect(this, &App::onInternalPathChange);
         rates();

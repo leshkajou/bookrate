@@ -1,9 +1,12 @@
 #include "basepage.h"
 
+
+
 BasePage::BasePage(WContainerWidget* container){
 	_container=container;
 	_header=new WContainerWidget(container);
 	_sidebar= new WContainerWidget(container);
+	_footer= new WContainerWidget(container);
 	_pagecontent= new WContainerWidget(container);
 	_pagecontent->setId("pagecontent");
 }
@@ -18,7 +21,10 @@ void BasePage::printHeader(){
 void BasePage::sidebar() {
     _sidebar->clear();
     _sidebar->setId("sidebar");
-    _sidebar->addWidget(new WText("Sidebar Menu"));
+   //_sidebar->addWidget(new WText("Sidebar Menu"));
+	
+	
+	
 	WText *list;
 	list=new WText(
 				 "<ul>" 
@@ -28,6 +34,12 @@ void BasePage::sidebar() {
 				"</ul>");
 	list->setInternalPathEncoding(true);
 	_sidebar->addWidget(list);
+}
+
+void BasePage::footer() {
+	_footer->clear();
+    _footer->setId("footer");
+	_footer->addWidget(new WText("Footer"));
 }
 
 void BasePage::clearContent(){
