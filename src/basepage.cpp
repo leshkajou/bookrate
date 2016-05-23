@@ -10,7 +10,7 @@ BasePage::BasePage(WContainerWidget* container){
 
 void BasePage::printHeader(){
 	_header->clear();
-	_header->addWidget(new WText("<h1> RateBook </h1>")); 
+	_header->addWidget(new WText("<h1> <p align='center'>RateBook</p></h1>")); 
 	_header->setId("header");
 	
 }
@@ -41,23 +41,32 @@ void BasePage::setContentText(std::string str){
 void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
 	//setContentText("top10");
 	// # creating table
-	Wt::WTable *table = new Wt::WTable();
+	WTable *table = new WTable();
 	table->setHeaderCount(1);
 	table->setWidth(Wt::WLength("70%"));
-	table->elementAt(0, 0)->addWidget(new Wt::WText("#"));
-	table->elementAt(0, 1)->addWidget(new Wt::WText("Title of book"));
-	table->elementAt(0, 2)->addWidget(new Wt::WText("Author"));
-	table->elementAt(0, 3)->addWidget(new Wt::WText("Mark"));
+	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
+	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
+	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Mark </p>"));
 	_pagecontent->addWidget(table);
 	int row=1;
 		for (Dbo::collection<Dbo::ptr<AllBooks> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
 			Dbo::ptr<AllBooks> Book = *i;
+			//headers
 			table->elementAt(row, 0)
-			->addWidget(new Wt::WText(Wt::WString::fromUTF8("{1}")
+			->addWidget(new WText(WString::fromUTF8("{1}")
 					  .arg(row)));
+			//titles
 			table->elementAt(row, 1)
-			->addWidget(new Wt::WText(WString::fromUTF8(Book.get()->title)));
-			//Wt::log("info") << "!!!"<< Book.get()->title;
+			->addWidget(new WText(WString::fromUTF8(Book.get()->title)));
+			//authors
+			/*table->elementAt(row, 2)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((Book.get()->authors))));*/
+			//marks
+			table->elementAt(row, 3)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((Book.get()->mark))));
 			_pagecontent->addWidget(table);	
 			row++;
 		}

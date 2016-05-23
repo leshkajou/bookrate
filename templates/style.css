@@ -20,14 +20,14 @@ body,html {
 
 #header{
 	width:100%;
-	height:100px;
-	background:grey;
+	height:70px;
+	background:#BC8F8F;
 }
 
 #footer{
 	width:100%;
 	height:50px;
-	background:grey;
+	background:#BC8F8F;
 }
 
 #contant{
@@ -42,6 +42,7 @@ body,html {
 	display: block; 
 	float: right;
 	width: 300px; 
-	color: #141343; 
+	color: #141343;
+	#background:#F4A460;
 	padding: 0.1em 0.5em;
 }
