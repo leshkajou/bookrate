@@ -24,9 +24,12 @@ void BasePage::sidebar() {
 	WText *list;
 	list=new WText(
 				 "<ul class='menu'>" 
+					"<li> <a href='#/'> rates </a> </li>"
 					"<li> <a href='#/authors'> authors </a> </li>"
-					"<li> <a href='#'> types of books </a> </li>" 
-					"<li> <a href='#/'> rates </a> </li>" 
+					"<li> <a href='#'> genres </a> </li>" 
+					"<li> <a href='#/'> series and cycles </a> </li>" 
+					"<li> <a href='#/'> add new book </a> </li>"
+					"<li> <a href='#/'> add new author </a> </li>"
 				"</ul>"
 				"<div class=\"footer\">"
 					"<p> copyright by Alexey 2016 </p>"

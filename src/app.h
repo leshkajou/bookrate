@@ -17,8 +17,11 @@ private:
     WContainerWidget* _content;
 	BasePage *page;
 	void authors();
-	void typesOfBooks();
+	void genres();
 	void rates();
+	void addNewBook();
+	void seriesAndCycles();
+	void addNewAuthor();
 	Dbo::backend::Sqlite3 database;
 //	Dbo::Session session;
 public:
