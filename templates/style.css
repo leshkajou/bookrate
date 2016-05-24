@@ -22,7 +22,7 @@ body,html {
 	display: block;
 	width:100%;
 	height:70px;
-	background:#c7d3bf;
+	background:#462023;
 	overflow: auto;
 	position: fixed;
 	z-index:1;
@@ -34,7 +34,7 @@ body,html {
 	height:50px;
 	bottom: 0;
 	position: absolute;
-	background:#536d6c;
+	background:#462023;
 	text-align: center;
 }
 
@@ -74,7 +74,7 @@ body,html {
     padding: 0;
     width: 100%;
 	height: 100%;
-    background-color: #ebeaf0;
+    background-color: #c06f6c;
 	border: 1px solid #555;
     overflow: auto; /* Enable scrolling if the sidenav has too much content */
 }
@@ -107,7 +107,7 @@ body,html {
 }
 
 .tablestyle th {
-    background-color: #a6a2a8;
+    background-color: #8f3636;
     color: white;
 }
 
@@ -123,3 +123,6 @@ body,html {
 	background-color: #ebeaf0
 }
 
+.color{
+	color:white;
+}

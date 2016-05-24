@@ -12,7 +12,8 @@ BasePage::BasePage(WContainerWidget* container){
 
 void BasePage::printHeader(){
 	_header->clear();
-	_header->addWidget(new WText("<h1> <p align='center'>RateBook</p></h1>")); 
+	_header->setStyleClass("color");
+	_header->addWidget(new WText("<h1> <p align='center' >RateBook</p></h1>")); 
 	_header->setId("header");
 	
 }
@@ -32,8 +33,8 @@ void BasePage::sidebar() {
 					"<li> <a href='#/'> add new author </a> </li>"
 				"</ul>"
 				"<div class=\"footer\">"
-					"<p> copyright by Alexey 2016 </p>"
-					"<p> <a href='#/'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </p>"
+					"<p> <font color='white'> copyright by Alexey 2016 </font> </p>"
+					"<p> <font color='white'> <a href='#/'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </font> </p>"
 				"</div>"
 	);
 
