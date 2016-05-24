@@ -26,8 +26,8 @@ void BasePage::sidebar() {
 				 "<ul class='menu'>" 
 					"<li> <a href='#/'> rate </a> </li>"
 					"<li> <a href='#/authors'> authors </a> </li>"
-					"<li> <a href='#'> genres </a> </li>" 
-					"<li> <a href='#/'> series and cycles </a> </li>" 
+					"<li> <a href='#/genres'> genres </a> </li>" 
+					"<li> <a href='#/series'> series and cycles </a> </li>" 
 					"<li> <a href='#/'> add new book </a> </li>"
 					"<li> <a href='#/'> add new author </a> </li>"
 				"</ul>"
@@ -121,6 +121,57 @@ void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthor
 			->addWidget(new WText(WString::fromUTF8("{1}")
 				      .arg((Author.get()->years))));
 			_pagecontent->addWidget(authTable);	
+			row++;
+	}
+}
+
+void BasePage::printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres){
+	WTable *genreTable = new WTable();
+	genreTable->setHeaderCount(1);
+	genreTable->setStyleClass("tablestyle");
+	genreTable->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	genreTable->elementAt(0, 1)->addWidget(new WText("<p align='left'> Types og genres </p>"));
+	_pagecontent->addWidget(genreTable);
+	int row=1;
+	for (Dbo::collection<Dbo::ptr<Genre> >::const_iterator i = listgenres.begin(); i != listgenres.end(); ++i){
+			Dbo::ptr<Genre> Genre = *i;
+			genreTable->setStyleClass("tablestyle th,td,tr");
+			//headers
+			genreTable->elementAt(row, 0)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+					  .arg(row)));
+			//genre
+			genreTable->elementAt(row, 1)
+			->addWidget(new WText(WString::fromUTF8(Genre.get()->genre)));
+			_pagecontent->addWidget(genreTable);	
+			row++;
+	}
+}
+
+void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
+	WTable *seriaTable = new WTable();
+	seriaTable->setHeaderCount(1);
+	seriaTable->setStyleClass("tablestyle");
+	seriaTable->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	seriaTable->elementAt(0, 1)->addWidget(new WText("<p align='left'> Name of seria </p>"));
+	seriaTable->elementAt(0, 2)->addWidget(new WText("<p align='left'> Number of books </p>"));
+	_pagecontent->addWidget(seriaTable);
+	int row=1;
+	for (Dbo::collection<Dbo::ptr<Seria> >::const_iterator i = listseries.begin(); i != listseries.end(); ++i){
+			Dbo::ptr<Seria> Seria = *i;
+			seriaTable->setStyleClass("tablestyle th,td,tr");
+			//headers
+			seriaTable->elementAt(row, 0)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+					  .arg(row)));
+			//genre
+			seriaTable->elementAt(row, 1)
+			->addWidget(new WText(WString::fromUTF8(Seria.get()->seria)));
+			//num of books in seria
+			seriaTable->elementAt(row, 2)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((Seria.get()->numOfBooks))));
+			_pagecontent->addWidget(seriaTable);	
 			row++;
 	}
 }

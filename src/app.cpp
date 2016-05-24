@@ -62,7 +62,32 @@ void App::authors(){
 		authors.commit();
 		
 }
-	
+
+void App::genres(){
+	Dbo::Session session;
+		session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
+		Dbo::Transaction genres(session);
+		Dbo::collection<Dbo::ptr<Genre> > listgenres = session.find<Genre>().orderBy("genre");
+		page->printGenres(listgenres);
+		genres.commit();
+}
+
+void App::series(){
+	Dbo::Session session;
+		session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
+		Dbo::Transaction series(session);
+		Dbo::collection<Dbo::ptr<Seria> > listseries = session.find<Seria>().where("id > 1");
+		page->printSeries(listseries);
+		series.commit();
+}
 
 void App::onInternalPathChange() {
         std::cout<<"internal path changed "<<internalPath()<<std::endl;
@@ -73,5 +98,11 @@ void App::onInternalPathChange() {
 // elseif..
         else if (internalPath() == "/authors") {
             authors();
+        }
+		else if (internalPath() == "/genres") {
+            genres();
+        }
+		else if (internalPath() == "/series") {
+            series();
         }
     }

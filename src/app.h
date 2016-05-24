@@ -19,6 +19,7 @@ private:
 	void authors();
 	void genres();
 	void rates();
+	void series();
 	void addNewBook();
 	void seriesAndCycles();
 	void addNewAuthor();
