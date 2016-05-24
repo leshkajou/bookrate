@@ -2,11 +2,11 @@
 #include "basepage.h"
 #include <Wt/WTemplate>
 #include <iostream>
-#include "allbooks.h"
+#include "tables.h"
 
 using namespace Wt;
 
-App::App(const WEnvironment &env): WApplication(env), database(WApplication::instance()->docRoot() + "/db/test1.db") {
+App::App(const WEnvironment &env): WApplication(env), database(WApplication::instance()->docRoot() + "/db/bookrate.db") {
 		std::cout<<"docroot = "<<WApplication::instance()->docRoot()<<std::endl;
 		std::cout<<"uproot = " <<WApplication::instance()->appRoot()<<std::endl;
         appName = "RateYourBook";
@@ -37,9 +37,13 @@ App::~App(){
 void App::rates() {
 		Dbo::Session session;
 		session.setConnection(database);
-		session.mapClass<AllBooks>("AllBooks");
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
+		//session.createTables();
 		Dbo::Transaction t(session);
-		Dbo::collection<Dbo::ptr<AllBooks> > top10 = session.find<AllBooks>().orderBy("mark DESC").limit(10);
+		Dbo::collection<Dbo::ptr<Book> > top10 = session.find<Book>().orderBy("mark DESC").limit(10);
         page->printTop10(top10);
 		t.commit();	
 }

@@ -1,4 +1,4 @@
-#include "allbooks.h"
+#include "tables.h"
 
 #include <Wt/Dbo/Impl>
 

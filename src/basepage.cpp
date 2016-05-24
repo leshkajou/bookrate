@@ -6,7 +6,6 @@ BasePage::BasePage(WContainerWidget* container){
 	_container=container;
 	_header=new WContainerWidget(container);
 	_sidebar= new WContainerWidget(container);
-	//_footer= new WContainerWidget(container);
 	_pagecontent= new WContainerWidget(container);
 	_pagecontent->setId("pagecontent");
 }
@@ -54,7 +53,7 @@ void BasePage::setContentText(std::string str){
 	_pagecontent->addWidget(new WText(str));
 }
 
-void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
+void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 	//setContentText("top10");
 	// # creating table
 	WTable *table = new WTable();
@@ -64,11 +63,12 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
 	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
 	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
 	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
-	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Mark </p>"));
+	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Genre </p>"));
+	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Mark </p>"));
 	_pagecontent->addWidget(table);
 	int row=1;
-		for (Dbo::collection<Dbo::ptr<AllBooks> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
-			Dbo::ptr<AllBooks> Book = *i;
+		for (Dbo::collection<Dbo::ptr<Book> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
+			Dbo::ptr<Book> Book = *i;
 			table->setStyleClass("tablestyle th,td,tr");
 			//headers
 			table->elementAt(row, 0)
@@ -78,11 +78,15 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
 			table->elementAt(row, 1)
 			->addWidget(new WText(WString::fromUTF8(Book.get()->title)));
 			//authors
-			/*table->elementAt(row, 2)
+			table->elementAt(row, 2)
 			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((Book.get()->authors))));*/
-			//marks
+				      .arg((Book.get()->author.get()->name))));
+			//genres
 			table->elementAt(row, 3)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((Book.get()->genre.get()->genre))));
+			//marks
+			table->elementAt(row, 4)
 			->addWidget(new WText(WString::fromUTF8("{1}")
 				      .arg((Book.get()->mark))));
 			_pagecontent->addWidget(table);	

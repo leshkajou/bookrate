@@ -19,7 +19,7 @@
 #include <Wt/WText>
 #include <Wt/WVBoxLayout>
 #include <string>
-#include "allbooks.h"
+#include "tables.h"
 #include <Wt/Dbo/Dbo>
 
 using namespace Wt;
@@ -36,7 +36,7 @@ public:
 	void printHeader();
 	void sidebar();
 	void footer();
-	void printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10);
+	void printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10);
 	void printTable();
 	void setContentText(std::string);
 	void clearContent();
