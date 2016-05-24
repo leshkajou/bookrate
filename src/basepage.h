@@ -36,8 +36,8 @@ public:
 	void printHeader();
 	void sidebar();
 	void footer();
-	void printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10);
-	void printTable();
+	void printTop10(const Dbo::collection<Dbo::ptr<Book> >& top10);
+	void printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthors);
 	void setContentText(std::string);
 	void clearContent();
 };

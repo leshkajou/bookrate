@@ -42,14 +42,25 @@ void App::rates() {
 		session.mapClass<Genre>("Genre");
 		session.mapClass<Seria>("Seria");
 		//session.createTables();
-		Dbo::Transaction t(session);
+		Dbo::Transaction rate(session);
 		Dbo::collection<Dbo::ptr<Book> > top10 = session.find<Book>().orderBy("mark DESC").limit(10);
         page->printTop10(top10);
-		t.commit();	
+		rate.commit();	
 }
 
 void App::authors(){
-        page->setContentText("authors are:");
+        //page->setContentText("authors are:");
+		Dbo::Session session;
+		session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
+		Dbo::Transaction authors(session);
+		Dbo::collection<Dbo::ptr<Author> > listauthors = session.find<Author>().orderBy("name");
+		page->printAuthors(listauthors);
+		authors.commit();
+		
 }
 	
 

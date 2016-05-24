@@ -24,7 +24,7 @@ void BasePage::sidebar() {
 	WText *list;
 	list=new WText(
 				 "<ul class='menu'>" 
-					"<li> <a href='#/'> rates </a> </li>"
+					"<li> <a href='#/'> rate </a> </li>"
 					"<li> <a href='#/authors'> authors </a> </li>"
 					"<li> <a href='#'> genres </a> </li>" 
 					"<li> <a href='#/'> series and cycles </a> </li>" 
@@ -60,7 +60,6 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 	//setContentText("top10");
 	// # creating table
 	WTable *table = new WTable();
-	table->setStyleClass("tablestyle");
 	table->setHeaderCount(1);
 	table->setStyleClass("tablestyle");
 	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
@@ -79,7 +78,8 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 					  .arg(row)));
 			//titles
 			table->elementAt(row, 1)
-			->addWidget(new WText(WString::fromUTF8(Book.get()->title)));
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg(Book.get()->title)));
 			//authors
 			table->elementAt(row, 2)
 			->addWidget(new WText(WString::fromUTF8("{1}")
@@ -95,4 +95,32 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 			_pagecontent->addWidget(table);	
 			row++;
 		}
+}
+
+void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthors){
+	WTable *authTable = new WTable();
+	authTable->setHeaderCount(1);
+	authTable->setStyleClass("tablestyle");
+	authTable->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	authTable->elementAt(0, 1)->addWidget(new WText("<p align='left'> Full name or pseudo </p>"));
+	authTable->elementAt(0, 2)->addWidget(new WText("<p align='left'> Years of life </p>"));
+	_pagecontent->addWidget(authTable);
+	int row=1;
+	for (Dbo::collection<Dbo::ptr<Author> >::const_iterator i = listauthors.begin(); i != listauthors.end(); ++i){
+			Dbo::ptr<Author> Author = *i;
+			authTable->setStyleClass("tablestyle th,td,tr");
+			//headers
+			authTable->elementAt(row, 0)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+					  .arg(row)));
+			//name
+			authTable->elementAt(row, 1)
+			->addWidget(new WText(WString::fromUTF8(Author.get()->name)));
+			//authors
+			authTable->elementAt(row, 2)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((Author.get()->years))));
+			_pagecontent->addWidget(authTable);	
+			row++;
+	}
 }
