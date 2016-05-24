@@ -1,12 +1,12 @@
 #include "basepage.h"
-
+#include <Wt/WApplication>
 
 
 BasePage::BasePage(WContainerWidget* container){
 	_container=container;
 	_header=new WContainerWidget(container);
 	_sidebar= new WContainerWidget(container);
-	_footer= new WContainerWidget(container);
+	//_footer= new WContainerWidget(container);
 	_pagecontent= new WContainerWidget(container);
 	_pagecontent->setId("pagecontent");
 }
@@ -22,16 +22,20 @@ void BasePage::sidebar() {
     _sidebar->clear();
     _sidebar->setId("sidebar");
    //_sidebar->addWidget(new WText("Sidebar Menu"));
-	
-	
-	
 	WText *list;
 	list=new WText(
-				 "<ul>" 
+				 "<ul class='menu'>" 
 					"<li> <a href='#/authors'> authors </a> </li>"
 					"<li> <a href='#'> types of books </a> </li>" 
 					"<li> <a href='#/'> rates </a> </li>" 
-				"</ul>");
+				"</ul>"
+				"<div class=\"footer\">"
+					"<p> copyright by Alexey 2016 </p>"
+					"<p> <a href='#/'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </p>"
+				"</div>"
+	);
+
+				
 	list->setInternalPathEncoding(true);
 	_sidebar->addWidget(list);
 }
@@ -54,8 +58,9 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
 	//setContentText("top10");
 	// # creating table
 	WTable *table = new WTable();
+	table->setStyleClass("tablestyle");
 	table->setHeaderCount(1);
-	table->setWidth(Wt::WLength("70%"));
+	table->setStyleClass("tablestyle");
 	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
 	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
 	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
@@ -64,6 +69,7 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<AllBooks> >& top10){
 	int row=1;
 		for (Dbo::collection<Dbo::ptr<AllBooks> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
 			Dbo::ptr<AllBooks> Book = *i;
+			table->setStyleClass("tablestyle th,td,tr");
 			//headers
 			table->elementAt(row, 0)
 			->addWidget(new WText(WString::fromUTF8("{1}")
