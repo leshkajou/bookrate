@@ -41,7 +41,7 @@ class Book{
 class Author{
 	public:
 	std::string name;
-	int years;
+	std::string years;
 	Dbo::collection< Dbo::ptr<Book> > books;
 	
 	template<class Action>

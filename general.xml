@@ -1,0 +1,16 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <messages>
+
+   <message id='addBookForm'>
+     book title ${title}
+	 book author ${author}
+	 book genre ${genre}
+	 book seria ${seria}
+	 book num in seria ${numInSeria}
+	 book year ${year}
+	 book mark ${mark}
+	 add book button ${button}
+	 </message>
+	 
+
+ </messages>

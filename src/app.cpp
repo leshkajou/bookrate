@@ -2,20 +2,23 @@
 #include "basepage.h"
 #include <Wt/WTemplate>
 #include <iostream>
+#include <Wt/WLineEdit>
+#include <Wt/WTemplate>
 #include "tables.h"
+#include <Wt/WContainerWidget>
+#include <Wt/WString>
 
 using namespace Wt;
 
 App::App(const WEnvironment &env): WApplication(env), database(WApplication::instance()->docRoot() + "/db/bookrate.db") {
-		std::cout<<"docroot = "<<WApplication::instance()->docRoot()<<std::endl;
-		std::cout<<"uproot = " <<WApplication::instance()->appRoot()<<std::endl;
+		Wt::WApplication *app = Wt::WApplication::instance();
+		app->messageResourceBundle().use("general");
         appName = "RateYourBook";
         setTitle(appName);
         _content = 0;
         page = new BasePage(content());
         page->printHeader();
         page->sidebar();
-		//page->footer();
         useStyleSheet("templates/style.css");
         internalPathChanged().connect(this, &App::onInternalPathChange);
         rates();
@@ -89,10 +92,20 @@ void App::series(){
 		series.commit();
 }
 
+void App::addNewBook(){
+	page->setContentText("Add new book:");
+	page->addBook();
+}
+
+void App::addNewAuthor(){
+	page->setContentText("Add new author:");
+	page->addAuthor();
+}
+
 void App::onInternalPathChange() {
         std::cout<<"internal path changed "<<internalPath()<<std::endl;
         page->clearContent();
-        if (internalPath() == "/") {
+        if (internalPath() == "/rate") {
             rates();
         }
 // elseif..
@@ -104,5 +117,11 @@ void App::onInternalPathChange() {
         }
 		else if (internalPath() == "/series") {
             series();
+        }
+		else if (internalPath() == "/newbook") {
+            addNewBook();
+        }
+		else if (internalPath() == "/newauthor") {
+            addNewAuthor();
         }
     }

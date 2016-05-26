@@ -1,5 +1,12 @@
 #include "basepage.h"
 #include <Wt/WApplication>
+#include <Wt/WIntValidator>
+#include <Wt/Utils>
+#include <Wt/WContainerWidget>
+#include <Wt/WPushButton>
+#include <Wt/WText>
+#include <Wt/WTextEdit>
+#include "bookmanager.h"
 
 
 BasePage::BasePage(WContainerWidget* container){
@@ -25,16 +32,16 @@ void BasePage::sidebar() {
 	WText *list;
 	list=new WText(
 				 "<ul class='menu'>" 
-					"<li> <a href='#/'> rate </a> </li>"
+					"<li> <a href='#/rate'> rate </a> </li>"
 					"<li> <a href='#/authors'> authors </a> </li>"
 					"<li> <a href='#/genres'> genres </a> </li>" 
 					"<li> <a href='#/series'> series and cycles </a> </li>" 
-					"<li> <a href='#/'> add new book </a> </li>"
-					"<li> <a href='#/'> add new author </a> </li>"
+					"<li> <a href='#/newbook'> add new book </a> </li>"
+					"<li> <a href='#/newauthor'> add new author </a> </li>"
 				"</ul>"
 				"<div class=\"footer\">"
 					"<p> <font color='white'> copyright by Alexey 2016 </font> </p>"
-					"<p> <font color='white'> <a href='#/'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </font> </p>"
+					"<p>  <a href='#/'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </p>"
 				"</div>"
 	);
 
@@ -176,3 +183,66 @@ void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
 			row++;
 	}
 }
+
+void BasePage::addBook(){
+	WContainerWidget *container = new WContainerWidget();
+	Wt::WTemplate *t = new Wt::WTemplate(Wt::WString::tr("addBookForm"));
+	
+	WLineEdit *editTitle = new WLineEdit(container);
+	editTitle->setPlaceholderText("title");
+	t->bindWidget("title", editTitle);
+	
+	WLineEdit *editAuthor = new WLineEdit(container);
+	editAuthor->setPlaceholderText("author");
+	t->bindWidget("author", editAuthor);
+	
+	WLineEdit *editGenre = new WLineEdit(container);
+	editGenre->setPlaceholderText("genre");
+	t->bindWidget("genre", editGenre);
+	
+	WLineEdit *editYear = new WLineEdit(container);
+	editYear->setPlaceholderText("year");
+	t->bindWidget("year", editYear);
+	
+	WLineEdit *editSeria = new WLineEdit(container);
+	editSeria->setPlaceholderText("seria");
+	t->bindWidget("seria", editSeria);
+	
+	WLineEdit *editNumInSeria = new WLineEdit(container);
+	editNumInSeria->setPlaceholderText("number in seria");
+	t->bindWidget("numInSeria", editNumInSeria);
+	
+	WLineEdit *editMark = new WLineEdit(container);
+	editMark->setPlaceholderText("mark");
+	t->bindWidget("mark", editMark);
+	
+	WPushButton *button = new WPushButton("Add book", container);
+	button->setMargin(10, Top | Bottom);
+
+	button->clicked().connect(std::bind([=] () {BookManager bm; bm.addAuthor("Alexey Kupriyanov","2016"); }));
+	
+	t->bindWidget("button", button);
+	_pagecontent->addWidget(t);	
+}
+
+void BasePage::addAuthor(){
+	WContainerWidget *container1 = new WContainerWidget();
+	Wt::WTemplate *r = new Wt::WTemplate(Wt::WString::tr("addAuthorForm"));
+	
+	WLineEdit *editName = new WLineEdit(container1);
+	editName->setPlaceholderText("name");
+	r->bindWidget("name", editName);
+	
+	WLineEdit *editYears = new WLineEdit(container1);
+	editYears->setPlaceholderText("years");
+	r->bindWidget("years", editYears);
+				  
+	WPushButton *button = new WPushButton("Add author", container1);
+	button->setMargin(10, Top | Bottom);
+				  
+	button->clicked().connect(std::bind([=] () {BookManager am; am.addAuthor("Alexey Kupriyanov1","2016"); }));
+				  
+	r->bindWidget("button", button);
+	_pagecontent->addWidget(r);
+}
+				  

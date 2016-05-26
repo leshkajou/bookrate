@@ -21,6 +21,8 @@
 #include <string>
 #include "tables.h"
 #include <Wt/Dbo/Dbo>
+#include <Wt/WLineEdit>
+#include <Wt/WTemplate>
 
 using namespace Wt;
 
@@ -41,6 +43,8 @@ public:
 	void printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres);
 	void printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries);
 	void setContentText(std::string);
+	void addBook();
+	void addAuthor();
 	void clearContent();
 };
 
