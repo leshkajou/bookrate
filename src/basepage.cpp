@@ -22,7 +22,6 @@ void BasePage::printHeader(){
 	_header->setStyleClass("color");
 	_header->addWidget(new WText("<h1> <p align='center' >RateBook</p></h1>")); 
 	_header->setId("header");
-	
 }
 
 void BasePage::sidebar() {
@@ -219,7 +218,7 @@ void BasePage::addBook(){
 	WPushButton *button = new WPushButton("Add book", container);
 	button->setMargin(10, Top | Bottom);
 
-	button->clicked().connect(std::bind([=] () {BookManager bm; bm.addAuthor("Alexey Kupriyanov","2016"); }));
+	button->clicked().connect(std::bind([=] () {BookManager bm; bm.addBook(editAuthor->valueText().toUTF8(),2016,23,10); }));
 	
 	t->bindWidget("button", button);
 	_pagecontent->addWidget(t);	
@@ -240,7 +239,7 @@ void BasePage::addAuthor(){
 	WPushButton *button = new WPushButton("Add author", container1);
 	button->setMargin(10, Top | Bottom);
 				  
-	button->clicked().connect(std::bind([=] () {BookManager am; am.addAuthor("Alexey Kupriyanov1","2016"); }));
+	button->clicked().connect(std::bind([=] () {BookManager am; am.addAuthor("123","2016"); }));
 				  
 	r->bindWidget("button", button);
 	_pagecontent->addWidget(r);

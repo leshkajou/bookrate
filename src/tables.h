@@ -42,11 +42,13 @@ class Author{
 	public:
 	std::string name;
 	std::string years;
+	//int id;
 	Dbo::collection< Dbo::ptr<Book> > books;
 	
 	template<class Action>
 	void persist(Action& a)
 	  {
+		//Dbo::field(a, id, "id");
 		Dbo::field(a, name, 	"Name");
 		Dbo::field(a, years,    "Years");
 		Dbo::hasMany(a, books, Dbo::ManyToOne, "Author");
