@@ -21,7 +21,7 @@ private:
 	void rates();
 	void series();
 	void addNewBook();
-	void aaNewAuthor();
+	void addYourMark();
 	void seriesAndCycles();
 	void addNewAuthor();
 	Dbo::backend::Sqlite3 database;

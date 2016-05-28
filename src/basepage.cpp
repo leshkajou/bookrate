@@ -36,7 +36,7 @@ void BasePage::sidebar() {
 					"<li> <a href='#/genres'> genres </a> </li>" 
 					"<li> <a href='#/series'> series and cycles </a> </li>" 
 					"<li> <a href='#/newbook'> add new book </a> </li>"
-					"<li> <a href='#/newauthor'> add new author </a> </li>"
+					"<li> <a href='#/addmark'> add your mark </a> </li>"
 				"</ul>"
 				"<div class=\"footer\">"
 					"<p> <font color='white'> copyright by Alexey 2016 </font> </p>"
@@ -267,4 +267,58 @@ void BasePage::addAuthor(){
 	r->bindWidget("button", button);
 	_pagecontent->addWidget(r);
 }
-				  
+
+
+
+void BasePage::addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark){	
+	WTable *table = new WTable();
+	table->setHeaderCount(1);
+	table->setStyleClass("tablestyle");
+	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
+	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
+	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Genre </p>"));
+	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Add your mark </p>"));
+	_pagecontent->addWidget(table);
+	int row=1;
+		for (Dbo::collection<Dbo::ptr<Book> >::const_iterator i = listaddmark.begin(); i != listaddmark.end(); ++i){
+			Dbo::ptr<Book> book = *i;
+			table->setStyleClass("tablestyle th,td,tr");
+			//headers
+			table->elementAt(row, 0)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+					  .arg(row)));
+			//titles
+			table->elementAt(row, 1)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg(book.get()->title)));
+			//authors
+			table->elementAt(row, 2)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((book.get()->author.get()->name))));
+			//genres
+			table->elementAt(row, 3)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((book.get()->genre.get()->genre))));
+			//add mark
+			WLineEdit *editAddMark = new WLineEdit(table->elementAt(row,4));
+			editAddMark->setPlaceholderText("Add mark");
+			table->elementAt(row, 4)
+			->addWidget(editAddMark);
+			table->elementAt(row, 4)
+			->addWidget(new WText("<br></br>"));
+			WPushButton *button = new WPushButton("Add mark", table->elementAt(row,4));
+			button->setMargin(10, Top | Bottom);
+			table->elementAt(row, 4)
+			->addWidget(button);
+			/*button->clicked().connect(std::bind([] ( Dbo::ptr<Book> book) {
+						BookManager bm;
+						std::cout<<book.get()->title; 
+						int curMark=book.get()->mark; 
+						int curNumMarks=book.get()->numMarks; 	
+						bm.refreshRate(book.get()->id, curMark+5, curNumMarks+1, session);												
+			},*i ));*/
+			row++;
+			_pagecontent->addWidget(table);	
+		}
+}

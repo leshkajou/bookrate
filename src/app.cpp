@@ -97,9 +97,18 @@ void App::addNewBook(){
 	page->addBook();
 }
 
-void App::addNewAuthor(){
-	page->setContentText("Add new author:");
-	page->addAuthor();
+void App::addYourMark(){
+	page->setContentText("Add your mark:");
+	Dbo::Session session;
+	session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
+		Dbo::Transaction addmark(session);
+		Dbo::collection<Dbo::ptr<Book> > listaddmark = session.find<Book>();	
+	page->addMark(listaddmark);
+	addmark.commit();
 }
 
 void App::onInternalPathChange() {
@@ -121,7 +130,7 @@ void App::onInternalPathChange() {
 		else if (internalPath() == "/newbook") {
             addNewBook();
         }
-		else if (internalPath() == "/newauthor") {
-            addNewAuthor();
+		else if (internalPath() == "/addmark") {
+            addYourMark();
         }
     }

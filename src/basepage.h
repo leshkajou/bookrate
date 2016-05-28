@@ -46,6 +46,7 @@ public:
 	void addBook();
 	void addAuthor();
 	void clearContent();
+	void addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark);
 	int intoInt(WLineEdit *ptr);
 };
 
