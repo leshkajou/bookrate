@@ -18,6 +18,8 @@ class Book{
 	int mark;
 	int year;
 	int numInSeria;
+	int numMarks;
+	int id;
 	std::string description;
 	
 	Dbo::ptr<Author> author;
@@ -27,6 +29,7 @@ class Book{
 	template<class Action>
   	void persist(Action& a)
 	  {
+		Dbo::field(a, id, 	"id");
 		Dbo::field(a, title, 	"Title");
 		Dbo::field(a, mark,     "Mark");
 		Dbo::field(a, year,     "Year");
@@ -35,6 +38,7 @@ class Book{
 		Dbo::belongsTo(a, seria, "Seria");
 		Dbo::field(a, numInSeria, "NumInSeria");
 		Dbo::field(a, description, "Description");
+		Dbo::field(a, numMarks, "NumMarks");
 	  }
 };
 

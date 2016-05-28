@@ -45,7 +45,9 @@ public:
 	void setContentText(std::string);
 	void addBook();
 	void addAuthor();
+	void addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark);
 	void clearContent();
+	int intoInt(WLineEdit *ptr);
 };
 
 #endif

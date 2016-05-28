@@ -20,6 +20,11 @@ App::App(const WEnvironment &env): WApplication(env), database(WApplication::ins
         page->printHeader();
         page->sidebar();
         useStyleSheet("templates/style.css");
+		/*session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");*/
         internalPathChanged().connect(this, &App::onInternalPathChange);
         rates();
 }
@@ -97,9 +102,19 @@ void App::addNewBook(){
 	page->addBook();
 }
 
-void App::addNewAuthor(){
-	page->setContentText("Add new author:");
-	page->addAuthor();
+void App::addYourMark(){
+	page->setContentText("authors are:");
+	/*Dbo::Session session;
+	session.setConnection(database);
+	session.mapClass<Book>("Book");
+	session.mapClass<Author>("Author");
+	session.mapClass<Genre>("Genre");
+	session.mapClass<Seria>("Seria");*/
+	//session.createTables();
+	/*Dbo::Transaction addmark(session);
+	Dbo::collection<Dbo::ptr<Book> > listaddmark = session.find<Book>();
+	page->addMark(listaddmark);
+	addmark.commit();*/	
 }
 
 void App::onInternalPathChange() {
@@ -121,7 +136,7 @@ void App::onInternalPathChange() {
 		else if (internalPath() == "/newbook") {
             addNewBook();
         }
-		else if (internalPath() == "/newauthor") {
-            addNewAuthor();
+		else if (internalPath() == "/addmark") {
+            addYourMark();
         }
     }

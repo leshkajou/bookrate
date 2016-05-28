@@ -15,8 +15,10 @@ using namespace Wt;
 class BookManager{
 	public:
 	BookManager();
-	void addBook(std::string title,  int year,  int numInSeria, int mark);
+	void addBook(std::string title, std::string author, std::string years, std::string genre,  
+						  int year, std::string seria, int numOfBooks, int numInSeria, int mark);
 	void addAuthor(std::string name, std::string years);
+	/*void refreshRate(int id, int newMark, int numMark, Dbo::Session &session);*/
 	~BookManager();
 };
 
