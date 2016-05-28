@@ -4,40 +4,41 @@ BookManager::BookManager(){
 	
 }
 
-void BookManager::addBook(std::string title,  int year, int numInSeria, int mark){
+void BookManager::addBook(std::string title, std::string author, std::string years, std::string genre,  
+						  int year, std::string seria, int numOfBooks, int numInSeria, int mark){
 		Dbo::backend::Sqlite3 database(WApplication::instance()->docRoot() + "/db/bookrate.db");
-		Dbo::Session session;
-		session.setConnection(database);
-		session.mapClass<Book>("Book");
-		session.mapClass<Author>("Author");
-		session.mapClass<Genre>("Genre");
-		session.mapClass<Seria>("Seria");
+		Dbo::Session session1;
+		session1.setConnection(database);
+		session1.mapClass<Book>("Book");
+		session1.mapClass<Author>("Author");
+		session1.mapClass<Genre>("Genre");
+		session1.mapClass<Seria>("Seria");
 		
 		
 		Author *author1 = new Author();
-		author1->name = "example-author";
-		author1->years = "example-date";
-		Dbo::Transaction addAuth(session);
-		Dbo::ptr <Author> newAuthor=session.add(author1);
+		author1->name = author;
+		author1->years = years;
+		Dbo::Transaction addAuth(session1);
+		Dbo::ptr <Author> newAuthor=session1.add(author1);
 		addAuth.commit();
 	
 		Genre *genre1 = new Genre();
-		genre1->genre = "example-genre";
-		Dbo::Transaction addGenre(session);
-		Dbo::ptr <Genre> newGenre=session.add(genre1);
+		genre1->genre = genre;
+		Dbo::Transaction addGenre(session1);
+		Dbo::ptr <Genre> newGenre=session1.add(genre1);
 		addGenre.commit();
 	
 		Seria *seria1 = new Seria();
-		seria1->seria = "example-seria";
-		seria1->numOfBooks = 33;
-		Dbo::Transaction addSeria(session);
-		Dbo::ptr <Seria> newSeria=session.add(seria1);
+		seria1->seria = seria;
+		seria1->numOfBooks = numOfBooks;
+		Dbo::Transaction addSeria(session1);
+		Dbo::ptr <Seria> newSeria=session1.add(seria1);
 		addSeria.commit();
 		//int a = session.query<int>("select id from Author").where("name = example-author");
 		//book->year=a;
 		//Dbo::collection<Dbo::ptr<Book> >  = session.find<Book>().orderBy("mark DESC").limit(10);
 		//Dbo::collection<= session.find<Author>().where("name = ?");
-		Dbo::Transaction addBookInDb(session);
+		Dbo::Transaction addBookInDb(session1);
 		Book *book = new Book();
 		book->title=title;
 		book->mark=mark;
@@ -45,7 +46,7 @@ void BookManager::addBook(std::string title,  int year, int numInSeria, int mark
 		book->numInSeria=numInSeria;
 		book->description="!";
 		//book->author.id();
-		Dbo::ptr <Book> newBook=session.add(book);
+		Dbo::ptr <Book> newBook=session1.add(book);
 		
 		newBook.modify()->author = newAuthor;
 		newBook.modify()->genre= newGenre;

@@ -46,6 +46,7 @@ public:
 	void addBook();
 	void addAuthor();
 	void clearContent();
+	int intoInt(WLineEdit *ptr);
 };
 
 #endif

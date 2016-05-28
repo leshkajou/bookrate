@@ -183,6 +183,12 @@ void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
 	}
 }
 
+int BasePage::intoInt(WLineEdit *ptr){
+	std::string stringV=ptr->valueText().toUTF8();
+	int intV = std::stoi(stringV);
+	return intV;
+}
+
 void BasePage::addBook(){
 	WContainerWidget *container = new WContainerWidget();
 	Wt::WTemplate *t = new Wt::WTemplate(Wt::WString::tr("addBookForm"));
@@ -194,6 +200,10 @@ void BasePage::addBook(){
 	WLineEdit *editAuthor = new WLineEdit(container);
 	editAuthor->setPlaceholderText("author");
 	t->bindWidget("author", editAuthor);
+	
+	WLineEdit *editAuthorYears = new WLineEdit(container);
+	editAuthorYears->setPlaceholderText("years of life");
+	t->bindWidget("years", editAuthorYears);
 	
 	WLineEdit *editGenre = new WLineEdit(container);
 	editGenre->setPlaceholderText("genre");
@@ -207,18 +217,31 @@ void BasePage::addBook(){
 	editSeria->setPlaceholderText("seria");
 	t->bindWidget("seria", editSeria);
 	
+	WLineEdit *editNumOfBooks = new WLineEdit(container);
+	editNumOfBooks->setPlaceholderText("num of books");
+	t->bindWidget("numOfBooks", editNumOfBooks);
+	
 	WLineEdit *editNumInSeria = new WLineEdit(container);
 	editNumInSeria->setPlaceholderText("number in seria");
 	t->bindWidget("numInSeria", editNumInSeria);
 	
 	WLineEdit *editMark = new WLineEdit(container);
 	editMark->setPlaceholderText("mark");
+	editMark->setValidator(new Wt::WIntValidator(1, 10));
 	t->bindWidget("mark", editMark);
 	
 	WPushButton *button = new WPushButton("Add book", container);
 	button->setMargin(10, Top | Bottom);
 
-	button->clicked().connect(std::bind([=] () {BookManager bm; bm.addBook(editAuthor->valueText().toUTF8(),2016,23,10); }));
+	button->clicked().connect(std::bind([=] () {BookManager bm; bm.addBook(editTitle->valueText().toUTF8(),
+																		   editAuthor->valueText().toUTF8(),
+																		   editAuthorYears->valueText().toUTF8(),
+																		   editGenre->valueText().toUTF8(),
+																		   intoInt(editYear),
+																		   editSeria->valueText().toUTF8(),
+																		   intoInt(editNumOfBooks),
+																		   intoInt(editNumInSeria),
+																		   intoInt(editMark)); }));
 	
 	t->bindWidget("button", button);
 	_pagecontent->addWidget(t);	
