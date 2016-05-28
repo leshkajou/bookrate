@@ -93,8 +93,8 @@ void App::series(){
 }
 
 void App::addNewBook(){
-	page->setContentText("Add new book:");
-	page->addBook();
+	//page->setContentText("Add new book:");
+	page->addNewBook1();
 }
 
 void App::addYourMark(){

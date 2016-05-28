@@ -185,11 +185,12 @@ void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
 
 int BasePage::intoInt(WLineEdit *ptr){
 	std::string stringV=ptr->valueText().toUTF8();
-	int intV = std::stoi(stringV);
+	int intV=atoi( stringV.c_str() );
+	//int intV = std::stoi(stringV);
 	return intV;
 }
 
-void BasePage::addBook(){
+void BasePage::addNewBook1(){
 	WContainerWidget *container = new WContainerWidget();
 	Wt::WTemplate *t = new Wt::WTemplate(Wt::WString::tr("addBookForm"));
 	

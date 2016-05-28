@@ -43,7 +43,7 @@ public:
 	void printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres);
 	void printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries);
 	void setContentText(std::string);
-	void addBook();
+	void addNewBook1();
 	void addAuthor();
 	void clearContent();
 	void addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark);
