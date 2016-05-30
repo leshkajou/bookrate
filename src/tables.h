@@ -11,7 +11,9 @@ using namespace Wt;
 class Author;
 class Genre;
 class Seria;
-
+/*
+	Class describing a book table in db
+*/
 class Book{
 	public:
 	std::string title;
@@ -38,6 +40,9 @@ class Book{
 	  }
 };
 
+/*
+	Class describing a author table in db
+*/
 class Author{
 	public:
 	std::string name;
@@ -55,6 +60,9 @@ class Author{
 	  }
 };
 
+/*
+	Class describing a genre table in db
+*/
 class Genre{
 	public:
 	std::string genre;
@@ -68,6 +76,9 @@ class Genre{
 	  }
 };
 
+/*
+	Class describing a book seria in db
+*/
 class Seria{
 	public:
 	std::string seria;

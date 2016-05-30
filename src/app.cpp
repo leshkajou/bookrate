@@ -9,7 +9,14 @@
 #include <Wt/WString>
 
 using namespace Wt;
-
+/*
+Builder of App class;
+It includes:
+	-creating an object, which returns the current application instance
+	-including xml- and css-files
+	-setting the browser window title and internal path
+	-printing of design methods of web-site
+*/
 App::App(const WEnvironment &env): WApplication(env), database(WApplication::instance()->docRoot() + "/db/bookrate.db") {
 		Wt::WApplication *app = Wt::WApplication::instance();
 		app->messageResourceBundle().use("general");
@@ -24,6 +31,9 @@ App::App(const WEnvironment &env): WApplication(env), database(WApplication::ins
         rates();
 }
 
+/*
+	Creating of content container
+*/
 WContainerWidget* App::content() {
 	if (_content == 0) {
 		_content = new WContainerWidget(root());
@@ -32,11 +42,19 @@ WContainerWidget* App::content() {
 	return _content;	
 }
 
+/*
+	Destructor
+*/
 App::~App(){
 	delete page;	
 }
 
-
+/*
+	Printing the rate page:
+		-Creating session with database and mapping classes
+		-Creating transaction->creating sql query of top 10 books rate->
+		->printing the result using printTop10 method->committing changes
+*/
 void App::rates() {
 		Dbo::Session session;
 		session.setConnection(database);
@@ -44,15 +62,18 @@ void App::rates() {
 		session.mapClass<Author>("Author");
 		session.mapClass<Genre>("Genre");
 		session.mapClass<Seria>("Seria");
-		//session.createTables();
 		Dbo::Transaction rate(session);
 		Dbo::collection<Dbo::ptr<Book> > top10 = session.find<Book>().orderBy("mark DESC").limit(10);
         page->printTop10(top10);
 		rate.commit();	
 }
-
+/*
+	Printing the author's page:
+		-Creating session with database and mapping classes
+		-Creating transaction->creating sql query of author's list->
+		->printing the result using printAuthors method->committing changes
+*/
 void App::authors(){
-        //page->setContentText("authors are:");
 		Dbo::Session session;
 		session.setConnection(database);
 		session.mapClass<Book>("Book");
@@ -66,6 +87,9 @@ void App::authors(){
 		
 }
 
+/*
+	printing lists of genres
+*/
 void App::genres(){
 	Dbo::Session session;
 		session.setConnection(database);
@@ -79,6 +103,9 @@ void App::genres(){
 		genres.commit();
 }
 
+/*
+	printing lists of series
+*/
 void App::series(){
 	Dbo::Session session;
 		session.setConnection(database);
@@ -92,11 +119,18 @@ void App::series(){
 		series.commit();
 }
 
+/*
+	printing data in "add new book" page using
+	addNewBook1 method
+*/
 void App::addNewBook(){
-	//page->setContentText("Add new book:");
 	page->addNewBook1();
 }
 
+/*
+	printing data in "add your mark" page using
+	addMark method
+*/
 void App::addYourMark(){
 	page->setContentText("Add your mark:");
 	Dbo::Session session;
@@ -111,6 +145,10 @@ void App::addYourMark(){
 	addmark.commit();
 }
 
+/*
+	function of choosing of methods of App class,
+	according to internal path
+*/
 void App::onInternalPathChange() {
         std::cout<<"internal path changed "<<internalPath()<<std::endl;
         page->clearContent();

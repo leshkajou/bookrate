@@ -26,6 +26,10 @@
 
 using namespace Wt;
 
+/*
+	Class, which generates containers of content, creates design of web-site and
+	also creates methods of adding widgets and output db information
+*/
 class BasePage
 {
 	WContainerWidget* _container;

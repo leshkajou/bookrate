@@ -7,7 +7,10 @@
 #include <Wt/WText>
 #include <Wt/WTextEdit>
 #include "bookmanager.h"
-
+/*
+	Builder of BasePage class:
+	creates all containers and connects with css class of pagecontent
+*/
 
 BasePage::BasePage(WContainerWidget* container){
 	_container=container;
@@ -17,6 +20,9 @@ BasePage::BasePage(WContainerWidget* container){
 	_pagecontent->setId("pagecontent");
 }
 
+/*
+	Method of adding design to header container	
+*/
 void BasePage::printHeader(){
 	_header->clear();
 	_header->setStyleClass("color");
@@ -24,6 +30,11 @@ void BasePage::printHeader(){
 	_header->setId("header");
 }
 
+/*
+	Adding sidebar menu to page
+	Footer will be on the bottom of sidebar menu including 
+		about/doc information and link
+*/
 void BasePage::sidebar() {
     _sidebar->clear();
     _sidebar->setId("sidebar");
@@ -48,26 +59,29 @@ void BasePage::sidebar() {
 	list->setInternalPathEncoding(true);
 	_sidebar->addWidget(list);
 }
-
-void BasePage::footer() {
-	_footer->clear();
-    _footer->setId("footer");
-	_footer->addWidget(new WText("Footer"));
-}
+/*
+	Clearing content of page before opening new page
+*/
 
 void BasePage::clearContent(){
  	_pagecontent->clear();
 }
 
+/* 
+	method for adding some text 
+*/
 void BasePage::setContentText(std::string str){
 	_pagecontent->addWidget(new WText(str));
 }
 
+/*
+	Output of db information of books into a widget table and then to _pagecontent container
+*/
 void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
-	//setContentText("top10");
 	// # creating table
 	WTable *table = new WTable();
 	table->setHeaderCount(1);
+	//setting css style
 	table->setStyleClass("tablestyle");
 	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
 	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
@@ -76,6 +90,7 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Mark </p>"));
 	_pagecontent->addWidget(table);
 	int row=1;
+		//complenting fields of table
 		for (Dbo::collection<Dbo::ptr<Book> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
 			Dbo::ptr<Book> Book = *i;
 			table->setStyleClass("tablestyle th,td,tr");
@@ -104,6 +119,9 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 		}
 }
 
+/*
+	Output of db information of authors into a widget table and then to _pagecontent container
+*/
 void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthors){
 	WTable *authTable = new WTable();
 	authTable->setHeaderCount(1);
@@ -113,6 +131,7 @@ void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthor
 	authTable->elementAt(0, 2)->addWidget(new WText("<p align='left'> Years of life </p>"));
 	_pagecontent->addWidget(authTable);
 	int row=1;
+	//complenting fields of table
 	for (Dbo::collection<Dbo::ptr<Author> >::const_iterator i = listauthors.begin(); i != listauthors.end(); ++i){
 			Dbo::ptr<Author> Author = *i;
 			authTable->setStyleClass("tablestyle th,td,tr");
@@ -132,6 +151,9 @@ void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthor
 	}
 }
 
+/*
+	Output of db information of genres into a widget table and then to _pagecontent container
+*/
 void BasePage::printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres){
 	WTable *genreTable = new WTable();
 	genreTable->setHeaderCount(1);
@@ -140,6 +162,7 @@ void BasePage::printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres){
 	genreTable->elementAt(0, 1)->addWidget(new WText("<p align='left'> Types og genres </p>"));
 	_pagecontent->addWidget(genreTable);
 	int row=1;
+	//complenting fields of table
 	for (Dbo::collection<Dbo::ptr<Genre> >::const_iterator i = listgenres.begin(); i != listgenres.end(); ++i){
 			Dbo::ptr<Genre> Genre = *i;
 			genreTable->setStyleClass("tablestyle th,td,tr");
@@ -155,6 +178,9 @@ void BasePage::printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres){
 	}
 }
 
+/*
+	Output of db information of genres into a widget table and then to _pagecontent container
+*/
 void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
 	WTable *seriaTable = new WTable();
 	seriaTable->setHeaderCount(1);
@@ -183,6 +209,9 @@ void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
 	}
 }
 
+/* 
+	method of transfomation information data (number) into int 
+*/
 int BasePage::intoInt(WLineEdit *ptr){
 	std::string stringV=ptr->valueText().toUTF8();
 	int intV=atoi( stringV.c_str() );
@@ -190,10 +219,15 @@ int BasePage::intoInt(WLineEdit *ptr){
 	return intV;
 }
 
+/*
+	method of adding new book
+*/
 void BasePage::addNewBook1(){
+	//creating container for user's input
 	WContainerWidget *container = new WContainerWidget();
+	//using xml-class
 	Wt::WTemplate *t = new Wt::WTemplate(Wt::WString::tr("addBookForm"));
-	
+	// adding fields for input:"
 	WLineEdit *editTitle = new WLineEdit(container);
 	editTitle->setPlaceholderText("title");
 	t->bindWidget("title", editTitle);
@@ -230,10 +264,12 @@ void BasePage::addNewBook1(){
 	editMark->setPlaceholderText("mark");
 	editMark->setValidator(new Wt::WIntValidator(1, 10));
 	t->bindWidget("mark", editMark);
+	//"
 	
+	//adding button
 	WPushButton *button = new WPushButton("Add book", container);
 	button->setMargin(10, Top | Bottom);
-
+	//after clicking on button -> using method of BookManager class of adding book into database 
 	button->clicked().connect(std::bind([=] () {BookManager bm; bm.addBook(editTitle->valueText().toUTF8(),
 																		   editAuthor->valueText().toUTF8(),
 																		   editAuthorYears->valueText().toUTF8(),
@@ -248,6 +284,9 @@ void BasePage::addNewBook1(){
 	_pagecontent->addWidget(t);	
 }
 
+/*
+	method of adding new author
+*/
 void BasePage::addAuthor(){
 	WContainerWidget *container1 = new WContainerWidget();
 	Wt::WTemplate *r = new Wt::WTemplate(Wt::WString::tr("addAuthorForm"));
@@ -270,7 +309,9 @@ void BasePage::addAuthor(){
 }
 
 
-
+/*
+	method of adding new mark
+*/
 void BasePage::addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark){	
 	WTable *table = new WTable();
 	table->setHeaderCount(1);
@@ -312,13 +353,14 @@ void BasePage::addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark){
 			button->setMargin(10, Top | Bottom);
 			table->elementAt(row, 4)
 			->addWidget(button);
-			/*button->clicked().connect(std::bind([] ( Dbo::ptr<Book> book) {
+			//after clicking on button -> using method of BookManager class of refreshing mark data and adding into database
+			button->clicked().connect(std::bind([] ( Dbo::ptr<Book> book) {
 						BookManager bm;
 						std::cout<<book.get()->title; 
 						int curMark=book.get()->mark; 
 						int curNumMarks=book.get()->numMarks; 	
 						bm.refreshRate(book.get()->id, curMark+5, curNumMarks+1, session);												
-			},*i ));*/
+			},*i ));
 			row++;
 			_pagecontent->addWidget(table);	
 		}

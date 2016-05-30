@@ -10,7 +10,10 @@
 #include <Wt/Dbo/backend/Sqlite3>
 
 using namespace Wt;
-
+/*
+	Class, which creates base page and
+	then creates variable part of application, according to user's actions
+*/
 class App: public WApplication {
 private:
     std::string appName;
