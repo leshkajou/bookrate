@@ -71,5 +71,21 @@ void BookManager::addAuthor(std::string name, std::string years){
 		addAuthorInDb.commit();
 }
 
+/*void BookManager::refreshRate(int id, int newMark, int numMark, Dbo::Session &session){
+		Dbo::backend::Sqlite3 database(WApplication::instance()->docRoot() + "/db/bookrate.db");
+		Dbo::Session session;
+		session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
+		Dbo::Transaction refr(session);
+		Dbo::ptr<Book> refr1 = session.find<Book>().where("id = ?").bind(id);
+		refr1.modify()->numMarks= numMark;
+		refr1.modify()->mark= newMark;
+		refr.commit();
+		std::cout<<refr1.get()->id<<std::endl;
+}*/
+
 BookManager::~BookManager(){	
 }
