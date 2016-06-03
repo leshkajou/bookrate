@@ -10,7 +10,7 @@
 #include <Wt/Dbo/backend/Sqlite3>
 
 using namespace Wt;
-/*
+/**
 	Class, which creates base page and
 	then creates variable part of application, according to user's actions
 */
@@ -27,8 +27,9 @@ private:
 	void addYourMark();
 	void seriesAndCycles();
 	void addNewAuthor();
-	Dbo::backend::Sqlite3 database;
-//	Dbo::Session session;
+	void printDocs();
+	//Dbo::Session session;
+	//Dbo::backend::Sqlite3 database;
 public:
     App(const WEnvironment &env);
 	WContainerWidget* content();

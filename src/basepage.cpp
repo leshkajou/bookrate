@@ -7,7 +7,7 @@
 #include <Wt/WText>
 #include <Wt/WTextEdit>
 #include "bookmanager.h"
-/*
+/**
 	Builder of BasePage class:
 	creates all containers and connects with css class of pagecontent
 */
@@ -20,7 +20,7 @@ BasePage::BasePage(WContainerWidget* container){
 	_pagecontent->setId("pagecontent");
 }
 
-/*
+/**
 	Method of adding design to header container	
 */
 void BasePage::printHeader(){
@@ -30,7 +30,7 @@ void BasePage::printHeader(){
 	_header->setId("header");
 }
 
-/*
+/**
 	Adding sidebar menu to page
 	Footer will be on the bottom of sidebar menu including 
 		about/doc information and link
@@ -51,7 +51,7 @@ void BasePage::sidebar() {
 				"</ul>"
 				"<div class=\"footer\">"
 					"<p> <font color='white'> copyright by Alexey 2016 </font> </p>"
-					"<p>  <a href='#/'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </p>"
+					"<p>  <a href='#/docs'> docs </a> |<a href='http://vk.com/id156854642'> myVk </a> </p>"
 				"</div>"
 	);
 
@@ -59,7 +59,7 @@ void BasePage::sidebar() {
 	list->setInternalPathEncoding(true);
 	_sidebar->addWidget(list);
 }
-/*
+/**
 	Clearing content of page before opening new page
 */
 
@@ -67,16 +67,130 @@ void BasePage::clearContent(){
  	_pagecontent->clear();
 }
 
-/* 
+/** 
 	method for adding some text 
 */
 void BasePage::setContentText(std::string str){
 	_pagecontent->addWidget(new WText(str));
 }
 
-/*
+/**
 	Output of db information of books into a widget table and then to _pagecontent container
 */
+
+void BasePage::printTop(const std::vector<Book>& books){
+	WTable *table = new WTable();
+	table->setHeaderCount(1);
+	//setting css style
+	table->setStyleClass("tablestyle");
+	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
+	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
+	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Genre </p>"));
+	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Mark </p>"));
+	_pagecontent->addWidget(table);
+	int row=1;
+		//complenting fields of table
+		for (std::vector<Book>::const_iterator i = books.begin(); i != books.end(); ++i){
+			
+			table->setStyleClass("tablestyle th,td,tr");
+			//headers
+			table->elementAt(row, 0)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+					  .arg(row)));
+			//titles
+			table->elementAt(row, 1)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg(i->title)));
+			//authors
+			table->elementAt(row, 2)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((i->author_.name))));
+			//genres
+			table->elementAt(row, 3)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((i->genre_.genre))));
+			//marks
+			table->elementAt(row, 4)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((i->mark))));
+			_pagecontent->addWidget(table);	
+			row++;
+		}
+}
+
+
+
+void BasePage::addYourMark(const std::vector<Book>& books){
+	WTable *table = new WTable();
+	table->setHeaderCount(1);
+	table->setStyleClass("tablestyle");
+	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
+	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
+	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
+	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Genre </p>"));
+	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Add your mark </p>"));
+	_pagecontent->addWidget(table);
+	int row=1;
+		for (std::vector<Book>::const_iterator i = books.begin(); i != books.end(); ++i){
+			table->setStyleClass("tablestyle th,td,tr");
+			//headers
+			table->elementAt(row, 0)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+					  .arg(row)));
+			//titles
+			table->elementAt(row, 1)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg(i->title)));
+			//authors
+			table->elementAt(row, 2)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((i->author_.name))));
+			//genres
+			table->elementAt(row, 3)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((i->genre_.genre))));
+			//marks
+			table->elementAt(row, 4)
+			->addWidget(new WText(WString::fromUTF8("{1}")
+				      .arg((i->mark))));
+			//add mark
+			WLineEdit *editAddMark = new WLineEdit(table->elementAt(row,4));
+			editAddMark->setPlaceholderText("Add mark");
+			table->elementAt(row, 4)
+			->addWidget(editAddMark);
+			table->elementAt(row, 4)
+			->addWidget(new WText("<br></br>"));
+			
+			WPushButton *button = new WPushButton("Add mark", table->elementAt(row,4));
+			button->setMargin(10, Top | Bottom);
+			table->elementAt(row, 4)
+			->addWidget(button);
+			
+			//after clicking on button -> using method of BookManager class of refreshing mark data and adding into database
+			button->clicked().connect(std::bind([] (int id) {
+						BookManager bm;
+						bm.updateRate(id,5);
+			},(*i).id ));
+			row++;
+			_pagecontent->addWidget(table);	
+		}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 	// # creating table
 	WTable *table = new WTable();
@@ -119,7 +233,7 @@ void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
 		}
 }
 
-/*
+/**
 	Output of db information of authors into a widget table and then to _pagecontent container
 */
 void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthors){
@@ -151,7 +265,7 @@ void BasePage::printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthor
 	}
 }
 
-/*
+/**
 	Output of db information of genres into a widget table and then to _pagecontent container
 */
 void BasePage::printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres){
@@ -178,7 +292,7 @@ void BasePage::printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres){
 	}
 }
 
-/*
+/**
 	Output of db information of genres into a widget table and then to _pagecontent container
 */
 void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
@@ -209,7 +323,7 @@ void BasePage::printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries){
 	}
 }
 
-/* 
+/**
 	method of transfomation information data (number) into int 
 */
 int BasePage::intoInt(WLineEdit *ptr){
@@ -219,7 +333,7 @@ int BasePage::intoInt(WLineEdit *ptr){
 	return intV;
 }
 
-/*
+/**
 	method of adding new book
 */
 void BasePage::addNewBook1(){
@@ -284,7 +398,7 @@ void BasePage::addNewBook1(){
 	_pagecontent->addWidget(t);	
 }
 
-/*
+/**
 	method of adding new author
 */
 void BasePage::addAuthor(){
@@ -309,7 +423,7 @@ void BasePage::addAuthor(){
 }
 
 
-/*
+/**
 	method of adding new mark
 */
 void BasePage::addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark){	
@@ -354,13 +468,14 @@ void BasePage::addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark){
 			table->elementAt(row, 4)
 			->addWidget(button);
 			//after clicking on button -> using method of BookManager class of refreshing mark data and adding into database
-			button->clicked().connect(std::bind([] ( Dbo::ptr<Book> book) {
+			button->clicked().connect(std::bind([] ( int id) {
 						BookManager bm;
-						std::cout<<book.get()->title; 
-						int curMark=book.get()->mark; 
-						int curNumMarks=book.get()->numMarks; 	
-						bm.refreshRate(book.get()->id, curMark+5, curNumMarks+1, session);												
-			},*i ));
+						
+						//std::cout<<book.get()->title; 
+						//int curMark=book.get()->mark; 
+						//int curNumMarks=book.get()->numMarks; 	
+						bm.refreshRate(id, 5, 1);												
+			},(*i).get()->id ));
 			row++;
 			_pagecontent->addWidget(table);	
 		}

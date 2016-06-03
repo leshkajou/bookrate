@@ -26,7 +26,7 @@
 
 using namespace Wt;
 
-/*
+/**
 	Class, which generates containers of content, creates design of web-site and
 	also creates methods of adding widgets and output db information
 */
@@ -52,6 +52,9 @@ public:
 	void clearContent();
 	void addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark);
 	int intoInt(WLineEdit *ptr);
+	
+	void printTop(const std::vector<Book>&);
+	void addYourMark(const std::vector<Book>&);
 };
 
 #endif

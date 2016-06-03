@@ -11,36 +11,9 @@ using namespace Wt;
 class Author;
 class Genre;
 class Seria;
-/*
-	Class describing a book table in db
-*/
-class Book{
-	public:
-	std::string title;
-	int mark;
-	int year;
-	int numInSeria;
-	std::string description;
-	
-	Dbo::ptr<Author> author;
-	Dbo::ptr<Genre> genre;
-	Dbo::ptr<Seria> seria;
-	
-	template<class Action>
-  	void persist(Action& a)
-	  {
-		Dbo::field(a, title, 	"Title");
-		Dbo::field(a, mark,     "Mark");
-		Dbo::field(a, year,     "Year");
-		Dbo::belongsTo(a, author, "Author");
-		Dbo::belongsTo(a, genre, "Genre");
-		Dbo::belongsTo(a, seria, "Seria");
-		Dbo::field(a, numInSeria, "NumInSeria");
-		Dbo::field(a, description, "Description");
-	  }
-};
+class Book;
 
-/*
+/**
 	Class describing a author table in db
 */
 class Author{
@@ -60,7 +33,7 @@ class Author{
 	  }
 };
 
-/*
+/**
 	Class describing a genre table in db
 */
 class Genre{
@@ -76,7 +49,7 @@ class Genre{
 	  }
 };
 
-/*
+/**
 	Class describing a book seria in db
 */
 class Seria{
@@ -93,5 +66,42 @@ class Seria{
 		Dbo::hasMany(a, series, Dbo::ManyToOne, "Seria");
 	  }
 };
+/**
+	Class describing a book table in db
+*/
+class Book{
+	public:
+	std::string title;
+	int mark;
+	int year;
+	int numInSeria;
+	int id;
+	int numMarks;
+	std::string description;
+	
+	Dbo::ptr<Author> author;
+	Dbo::ptr<Genre> genre;
+	Dbo::ptr<Seria> seria;
+	Author author_;
+	Genre genre_;
+	Seria seria_;
+	
+	template<class Action>
+  	void persist(Action& a)
+	  {
+		Dbo::field(a, id, 	"id");
+		Dbo::field(a, title, 	"Title");
+		Dbo::field(a, mark,     "Mark");
+		Dbo::field(a, year,     "Year");
+		Dbo::belongsTo(a, author, "Author");
+		Dbo::field(a, numMarks, "NumMarks");
+		Dbo::belongsTo(a, genre, "Genre");
+		Dbo::belongsTo(a, seria, "Seria");
+		Dbo::field(a, numInSeria, "NumInSeria");
+		Dbo::field(a, description, "Description");
+	  }
+};
+
+
 
 #endif

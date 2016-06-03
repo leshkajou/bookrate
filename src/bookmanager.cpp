@@ -1,9 +1,105 @@
 #include "bookmanager.h"
 
-BookManager::BookManager(){
-	
+BookManager::BookManager():database(WApplication::instance()->docRoot() + "/db/bookrate.db"){
+		session.setConnection(database);
+		session.mapClass<Book>("Book");
+		session.mapClass<Author>("Author");
+		session.mapClass<Genre>("Genre");
+		session.mapClass<Seria>("Seria");
 }
-/*
+
+
+
+BookManager::~BookManager(){	
+}
+
+
+
+std::vector<Book> BookManager::topBooks(int lim){
+	Dbo::Transaction transaction(session);
+
+	Books top = session.find<Book>().orderBy("mark desc").limit(lim);
+
+	std::vector<Book> result;
+	for (Books::const_iterator i = top.begin(); i != top.end(); ++i) {
+		Dbo::ptr<Book> book = *i;
+		result.push_back(*book);
+		result.back().author_= *(book.get()->author);
+		result.back().genre_= *(book.get()->genre);
+		result.back().seria_= *(book.get()->seria);
+	}
+
+	transaction.commit();
+
+	return result;
+}
+
+
+
+void BookManager::updateRate(int id, int plusmark){
+	Dbo::Transaction transaction(session);
+	Dbo::ptr<Book> book = session.find<Book>().where("id = ?").bind(id);
+	if (book){
+		book.modify()->mark+=plusmark;
+		book.modify()->numMarks++;
+	}
+	transaction.commit();
+	session.flush();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Dbo::collection<Dbo::ptr<Book> > BookManager:: getTop10(){
+		Dbo::Transaction getTop10(session);
+		Dbo::collection<Dbo::ptr<Book> > listbooks = session.find<Book>().orderBy("title");
+		getTop10.commit();
+		return listbooks;
+}*/
+/**
 	adding new book
 */
 void BookManager::addBook(std::string title, std::string author, std::string years, std::string genre,  
@@ -58,7 +154,7 @@ void BookManager::addBook(std::string title, std::string author, std::string yea
 		addBookInDb.commit();
 }
 
-/*
+/**
 	adding new author
 */
 void BookManager::addAuthor(std::string name, std::string years){
@@ -79,23 +175,21 @@ void BookManager::addAuthor(std::string name, std::string years){
 		addAuthorInDb.commit();
 }
 
-void BookManager::refreshRate(int id, int newMark, int numMark, Dbo::Session &session){
+void BookManager::refreshRate(int id, int newMark, int numMark){
 		//mapping and setting session with db
 		Dbo::backend::Sqlite3 database(WApplication::instance()->docRoot() + "/db/bookrate.db");
-		Dbo::Session session;
-		session.setConnection(database);
-		session.mapClass<Book>("Book");
-		session.mapClass<Author>("Author");
-		session.mapClass<Genre>("Genre");
-		session.mapClass<Seria>("Seria");
-		Dbo::Transaction refr(session);
-		Dbo::ptr<Book> refr1 = session.find<Book>().where("id = ?").bind(id);
+		Dbo::Session session1;
+		session1.setConnection(database);
+		session1.mapClass<Book>("Book");
+		session1.mapClass<Author>("Author");
+		session1.mapClass<Genre>("Genre");
+		session1.mapClass<Seria>("Seria");
+		Dbo::Transaction refr(session1);
+		Dbo::ptr<Book> refr1 = session1.find<Book>().where("id = ?").bind(id);
 		//adding changes of mark
-		refr1.modify()->numMarks= numMark;
-		refr1.modify()->mark= newMark;
+		refr1.modify()->numMarks += numMark;
+		refr1.modify()->mark += newMark;
 		refr.commit();
 		std::cout<<refr1.get()->id<<std::endl;
 }
 
-BookManager::~BookManager(){	
-}

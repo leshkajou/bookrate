@@ -7,9 +7,10 @@
 #include "tables.h"
 #include <Wt/WContainerWidget>
 #include <Wt/WString>
+#include "bookmanager.h"
 
 using namespace Wt;
-/*
+/**
 Builder of App class;
 It includes:
 	-creating an object, which returns the current application instance
@@ -31,7 +32,7 @@ App::App(const WEnvironment &env): WApplication(env), database(WApplication::ins
         rates();
 }
 
-/*
+/**
 	Creating of content container
 */
 WContainerWidget* App::content() {
@@ -42,14 +43,14 @@ WContainerWidget* App::content() {
 	return _content;	
 }
 
-/*
+/**
 	Destructor
 */
 App::~App(){
 	delete page;	
 }
 
-/*
+/**
 	Printing the rate page:
 		-Creating session with database and mapping classes
 		-Creating transaction->creating sql query of top 10 books rate->
@@ -67,7 +68,7 @@ void App::rates() {
         page->printTop10(top10);
 		rate.commit();	
 }
-/*
+/**
 	Printing the author's page:
 		-Creating session with database and mapping classes
 		-Creating transaction->creating sql query of author's list->
@@ -87,7 +88,7 @@ void App::authors(){
 		
 }
 
-/*
+/**
 	printing lists of genres
 */
 void App::genres(){
@@ -103,7 +104,7 @@ void App::genres(){
 		genres.commit();
 }
 
-/*
+/**
 	printing lists of series
 */
 void App::series(){
@@ -119,7 +120,7 @@ void App::series(){
 		series.commit();
 }
 
-/*
+/**
 	printing data in "add new book" page using
 	addNewBook1 method
 */
@@ -127,25 +128,27 @@ void App::addNewBook(){
 	page->addNewBook1();
 }
 
-/*
+/**
 	printing data in "add your mark" page using
 	addMark method
 */
 void App::addYourMark(){
 	page->setContentText("Add your mark:");
-	Dbo::Session session;
-	session.setConnection(database);
-		session.mapClass<Book>("Book");
-		session.mapClass<Author>("Author");
-		session.mapClass<Genre>("Genre");
-		session.mapClass<Seria>("Seria");
-		Dbo::Transaction addmark(session);
-		Dbo::collection<Dbo::ptr<Book> > listaddmark = session.find<Book>();	
-	page->addMark(listaddmark);
-	addmark.commit();
+	std::vector<Book> books;
+	{
+		BookManager bm;
+		books=bm.topBooks(5);
+	}
+	page->addYourMark(books);
 }
 
-/*
+void App::printDocs(){
+	page->setContentText("Test:");
+	BookManager bm;
+	page->printTop(bm.topBooks(16));
+}
+
+/**
 	function of choosing of methods of App class,
 	according to internal path
 */
@@ -170,5 +173,8 @@ void App::onInternalPathChange() {
         }
 		else if (internalPath() == "/addmark") {
             addYourMark();
+        }
+		else if (internalPath() == "/docs") {
+            printDocs();
         }
     }
