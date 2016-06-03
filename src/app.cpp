@@ -57,16 +57,8 @@ App::~App(){
 		->printing the result using printTop10 method->committing changes
 */
 void App::rates() {
-		Dbo::Session session;
-		session.setConnection(database);
-		session.mapClass<Book>("Book");
-		session.mapClass<Author>("Author");
-		session.mapClass<Genre>("Genre");
-		session.mapClass<Seria>("Seria");
-		Dbo::Transaction rate(session);
-		Dbo::collection<Dbo::ptr<Book> > top10 = session.find<Book>().orderBy("mark DESC").limit(10);
-        page->printTop10(top10);
-		rate.commit();	
+		BookManager bm;
+		page->printTop(bm.topBooks(10));
 }
 /**
 	Printing the author's page:
@@ -133,19 +125,17 @@ void App::addNewBook(){
 	addMark method
 */
 void App::addYourMark(){
-	page->setContentText("Add your mark:");
+	//page->setContentText("Add your mark:");
 	std::vector<Book> books;
 	{
 		BookManager bm;
-		books=bm.topBooks(5);
+		books=bm.topBooks(30);
 	}
 	page->addYourMark(books);
 }
 
 void App::printDocs(){
 	page->setContentText("Test:");
-	BookManager bm;
-	page->printTop(bm.topBooks(16));
 }
 
 /**

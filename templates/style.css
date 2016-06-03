@@ -127,3 +127,9 @@ body,html {
 .color{
 	color:white;
 }
+
+.addbook tr td{
+	text-align: right;
+	padding:0 10px 0 0;
+	margin:0 0 5px 0;
+}

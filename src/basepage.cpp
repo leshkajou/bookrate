@@ -151,10 +151,12 @@ void BasePage::addYourMark(const std::vector<Book>& books){
 			table->elementAt(row, 3)
 			->addWidget(new WText(WString::fromUTF8("{1}")
 				      .arg((i->genre_.genre))));
-			//marks
+			//CurMark
+			table->elementAt(row, 4)
+			->addWidget(new WText("Current Mark: "));
 			table->elementAt(row, 4)
 			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((i->mark))));
+				      .arg((std::round(((float)i->mark/(i->numMarks)))))));
 			//add mark
 			WLineEdit *editAddMark = new WLineEdit(table->elementAt(row,4));
 			editAddMark->setPlaceholderText("Add mark");
@@ -178,61 +180,6 @@ void BasePage::addYourMark(const std::vector<Book>& books){
 		}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void BasePage::printTop10( const Dbo::collection<Dbo::ptr<Book> >& top10){
-	// # creating table
-	WTable *table = new WTable();
-	table->setHeaderCount(1);
-	//setting css style
-	table->setStyleClass("tablestyle");
-	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
-	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
-	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
-	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Genre </p>"));
-	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Mark </p>"));
-	_pagecontent->addWidget(table);
-	int row=1;
-		//complenting fields of table
-		for (Dbo::collection<Dbo::ptr<Book> >::const_iterator i = top10.begin(); i != top10.end(); ++i){
-			Dbo::ptr<Book> Book = *i;
-			table->setStyleClass("tablestyle th,td,tr");
-			//headers
-			table->elementAt(row, 0)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-					  .arg(row)));
-			//titles
-			table->elementAt(row, 1)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg(Book.get()->title)));
-			//authors
-			table->elementAt(row, 2)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((Book.get()->author.get()->name))));
-			//genres
-			table->elementAt(row, 3)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((Book.get()->genre.get()->genre))));
-			//marks
-			table->elementAt(row, 4)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((Book.get()->mark))));
-			_pagecontent->addWidget(table);	
-			row++;
-		}
-}
 
 /**
 	Output of db information of authors into a widget table and then to _pagecontent container
@@ -344,8 +291,8 @@ void BasePage::addNewBook1(){
 	Wt::WTemplate *t = new Wt::WTemplate(Wt::WString::tr("addBookForm"));
 	// adding fields for input:"
 	WLineEdit *editTitle = new WLineEdit(container);
-	editTitle->setPlaceholderText("title");
-	t->bindWidget("title", editTitle);
+	editTitle->setPlaceholderText("title");						 
+	t->bindWidget("title",editTitle);
 	
 	WLineEdit *editAuthor = new WLineEdit(container);
 	editAuthor->setPlaceholderText("author");
@@ -424,60 +371,3 @@ void BasePage::addAuthor(){
 }
 
 
-/**
-	method of adding new mark
-*/
-void BasePage::addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark){	
-	WTable *table = new WTable();
-	table->setHeaderCount(1);
-	table->setStyleClass("tablestyle");
-	table->elementAt(0, 0)->addWidget(new WText("<p align='left'> # </p>"));
-	table->elementAt(0, 1)->addWidget(new WText("<p align='left'> Title of book </p>"));
-	table->elementAt(0, 2)->addWidget(new WText("<p align='left'> Author </p>"));
-	table->elementAt(0, 3)->addWidget(new WText("<p align='left'> Genre </p>"));
-	table->elementAt(0, 4)->addWidget(new WText("<p align='left'> Add your mark </p>"));
-	_pagecontent->addWidget(table);
-	int row=1;
-		for (Dbo::collection<Dbo::ptr<Book> >::const_iterator i = listaddmark.begin(); i != listaddmark.end(); ++i){
-			Dbo::ptr<Book> book = *i;
-			table->setStyleClass("tablestyle th,td,tr");
-			//headers
-			table->elementAt(row, 0)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-					  .arg(row)));
-			//titles
-			table->elementAt(row, 1)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg(book.get()->title)));
-			//authors
-			table->elementAt(row, 2)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((book.get()->author.get()->name))));
-			//genres
-			table->elementAt(row, 3)
-			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((book.get()->genre.get()->genre))));
-			//add mark
-			WLineEdit *editAddMark = new WLineEdit(table->elementAt(row,4));
-			editAddMark->setPlaceholderText("Add mark");
-			table->elementAt(row, 4)
-			->addWidget(editAddMark);
-			table->elementAt(row, 4)
-			->addWidget(new WText("<br></br>"));
-			WPushButton *button = new WPushButton("Add mark", table->elementAt(row,4));
-			button->setMargin(10, Top | Bottom);
-			table->elementAt(row, 4)
-			->addWidget(button);
-			//after clicking on button -> using method of BookManager class of refreshing mark data and adding into database
-			button->clicked().connect(std::bind([] ( int id) {
-						BookManager bm;
-						
-						//std::cout<<book.get()->title; 
-						//int curMark=book.get()->mark; 
-						//int curNumMarks=book.get()->numMarks; 	
-						bm.refreshRate(id, 5, 1);												
-			},(*i).get()->id ));
-			row++;
-			_pagecontent->addWidget(table);	
-		}
-}

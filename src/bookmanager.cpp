@@ -17,7 +17,7 @@ BookManager::~BookManager(){
 
 std::vector<Book> BookManager::topBooks(int lim){
 	Dbo::Transaction transaction(session);
-
+	
 	Books top = session.find<Book>().orderBy("Mark/NumMarks desc").limit(lim);
 
 	std::vector<Book> result;
@@ -64,57 +64,6 @@ void BookManager::updateRate(int id, int plusmark){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*Dbo::collection<Dbo::ptr<Book> > BookManager:: getTop10(){
-		Dbo::Transaction getTop10(session);
-		Dbo::collection<Dbo::ptr<Book> > listbooks = session.find<Book>().orderBy("title");
-		getTop10.commit();
-		return listbooks;
-}*/
 /**
 	adding new book
 */
