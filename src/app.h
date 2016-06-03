@@ -29,7 +29,7 @@ private:
 	void addNewAuthor();
 	void printDocs();
 	//Dbo::Session session;
-	//Dbo::backend::Sqlite3 database;
+	Dbo::backend::Sqlite3 database;
 public:
     App(const WEnvironment &env);
 	WContainerWidget* content();

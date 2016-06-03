@@ -7,6 +7,7 @@
 #include <Wt/WText>
 #include <Wt/WTextEdit>
 #include "bookmanager.h"
+#include <cmath>
 /**
 	Builder of BasePage class:
 	creates all containers and connects with css class of pagecontent
@@ -113,7 +114,7 @@ void BasePage::printTop(const std::vector<Book>& books){
 			//marks
 			table->elementAt(row, 4)
 			->addWidget(new WText(WString::fromUTF8("{1}")
-				      .arg((i->mark))));
+				      .arg(std::round(((float)i->mark/(i->numMarks))))));
 			_pagecontent->addWidget(table);	
 			row++;
 		}
@@ -168,10 +169,10 @@ void BasePage::addYourMark(const std::vector<Book>& books){
 			->addWidget(button);
 			
 			//after clicking on button -> using method of BookManager class of refreshing mark data and adding into database
-			button->clicked().connect(std::bind([] (int id) {
+			button->clicked().connect(std::bind([] (int id, WLineEdit *editAddMark) {
 						BookManager bm;
-						bm.updateRate(id,5);
-			},(*i).id ));
+						bm.updateRate(id,BasePage::intoInt(editAddMark));
+			},(*i).id, editAddMark));
 			row++;
 			_pagecontent->addWidget(table);	
 		}

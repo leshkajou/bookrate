@@ -51,7 +51,7 @@ public:
 	void addAuthor();
 	void clearContent();
 	void addMark(const Dbo::collection<Dbo::ptr<Book> >& listaddmark);
-	int intoInt(WLineEdit *ptr);
+	static int intoInt(WLineEdit *ptr);
 	
 	void printTop(const std::vector<Book>&);
 	void addYourMark(const std::vector<Book>&);

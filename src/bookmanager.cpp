@@ -18,7 +18,7 @@ BookManager::~BookManager(){
 std::vector<Book> BookManager::topBooks(int lim){
 	Dbo::Transaction transaction(session);
 
-	Books top = session.find<Book>().orderBy("mark desc").limit(lim);
+	Books top = session.find<Book>().orderBy("Mark/NumMarks desc").limit(lim);
 
 	std::vector<Book> result;
 	for (Books::const_iterator i = top.begin(); i != top.end(); ++i) {
@@ -37,14 +37,30 @@ std::vector<Book> BookManager::topBooks(int lim){
 
 
 void BookManager::updateRate(int id, int plusmark){
-	Dbo::Transaction transaction(session);
-	Dbo::ptr<Book> book = session.find<Book>().where("id = ?").bind(id);
-	if (book){
-		book.modify()->mark+=plusmark;
-		book.modify()->numMarks++;
+	sqlite3 *db;
+	char *zErrMsg = 0;
+	int rc;
+
+	rc = sqlite3_open((WApplication::instance()->docRoot() + "/db/bookrate.db").c_str(), &db);
+	if( rc ){
+	  fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+	  exit(0);
+	}else{
+	  fprintf(stderr, "Opened database successfully\n");
 	}
-	transaction.commit();
-	session.flush();
+	std::string sqlQuery;
+	sqlQuery="UPDATE Book SET NumMarks=NumMarks+1, Mark= Mark+"; 
+	sqlQuery+=std::to_string(plusmark)+" WHERE id="+std::to_string(id);
+		
+	rc = sqlite3_exec(db, sqlQuery.c_str(), NULL, NULL, &zErrMsg);
+	if( rc != SQLITE_OK ){
+	  fprintf(stderr, "SQL error: %s\n", zErrMsg);
+	  sqlite3_free(zErrMsg);
+	}else{
+	  fprintf(stdout, "Operation done successfully\n");
+	}
+	sqlite3_close(db);
+	
 }
 
 

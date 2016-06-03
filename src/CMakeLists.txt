@@ -12,5 +12,5 @@ aux_source_directory(. 	SRCLIST)
 add_executable(${PROJECT_NAME} ${SRCLIST})
 
 target_link_libraries(${PROJECT_NAME}
-		      ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_SIGNALS_LIBRARY}
+		      ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_SIGNALS_LIBRARY} sqlite3
 		      wt wthttp wtdbo wtdbosqlite3) 

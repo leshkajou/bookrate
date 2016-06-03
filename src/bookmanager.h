@@ -9,7 +9,8 @@
 #include <Wt/Dbo/Session>
 #include <Wt/Dbo/ptr>
 #include <vector>
-
+#include <stdio.h>
+#include <sqlite3.h> 
 
 using namespace Wt;
 typedef Wt::Dbo::collection< Wt::Dbo::ptr<Book> > Books;
