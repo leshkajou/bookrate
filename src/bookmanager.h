@@ -24,7 +24,7 @@ class BookManager{
 	BookManager();
 	//Dbo::collection<Dbo::ptr<Book> > getTop10();  
 	std::vector<Book> topBooks(int);
-	void updateRate(int id, int mark);
+	void updateRate(std::string title, int mark);
 	
 	
 	

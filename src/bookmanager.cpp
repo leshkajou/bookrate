@@ -36,7 +36,7 @@ std::vector<Book> BookManager::topBooks(int lim){
 
 
 
-void BookManager::updateRate(int id, int plusmark){
+void BookManager::updateRate(std::string title, int plusmark){
 	sqlite3 *db;
 	char *zErrMsg = 0;
 	int rc;
@@ -50,7 +50,7 @@ void BookManager::updateRate(int id, int plusmark){
 	}
 	std::string sqlQuery;
 	sqlQuery="UPDATE Book SET NumMarks=NumMarks+1, Mark= Mark+"; 
-	sqlQuery+=std::to_string(plusmark)+" WHERE id="+std::to_string(id);
+	sqlQuery+=std::to_string(plusmark)+" WHERE Title="+title;
 		
 	rc = sqlite3_exec(db, sqlQuery.c_str(), NULL, NULL, &zErrMsg);
 	if( rc != SQLITE_OK ){

@@ -171,10 +171,10 @@ void BasePage::addYourMark(const std::vector<Book>& books){
 			->addWidget(button);
 			
 			//after clicking on button -> using method of BookManager class of refreshing mark data and adding into database
-			button->clicked().connect(std::bind([] (int id, WLineEdit *editAddMark) {
+			button->clicked().connect(std::bind([] (std::string title, WLineEdit *editAddMark) {
 						BookManager bm;
-						bm.updateRate(id,BasePage::intoInt(editAddMark));
-			},(*i).id, editAddMark));
+						bm.updateRate(title,BasePage::intoInt(editAddMark));
+			},(*i).title, editAddMark));
 			row++;
 			_pagecontent->addWidget(table);	
 		}
