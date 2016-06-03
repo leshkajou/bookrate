@@ -71,8 +71,8 @@ void BasePage::clearContent(){
 /** 
 	method for adding some text 
 */
-void BasePage::setContentText(std::string str){
-	_pagecontent->addWidget(new WText(str));
+void BasePage::setAboutText(){
+	_pagecontent->addWidget(new WText());
 }
 
 /**

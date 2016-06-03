@@ -46,7 +46,7 @@ public:
 	void printAuthors(const Dbo::collection<Dbo::ptr<Author> >& listauthors);
 	void printGenres(const Dbo::collection<Dbo::ptr<Genre> >& listgenres);
 	void printSeries(const Dbo::collection<Dbo::ptr<Seria> >& listseries);
-	void setContentText(std::string);
+	void setAboutText();
 	void addNewBook1();
 	void addAuthor();
 	void clearContent();

@@ -12,6 +12,7 @@ class Author;
 class Genre;
 class Seria;
 class Book;
+class Book1;
 
 /**
 	Class describing a author table in db
@@ -22,7 +23,6 @@ class Author{
 	std::string years;
 	//int id;
 	Dbo::collection< Dbo::ptr<Book> > books;
-	
 	template<class Action>
 	void persist(Action& a)
 	  {
@@ -89,7 +89,6 @@ class Book{
 	template<class Action>
   	void persist(Action& a)
 	  {
-		Dbo::field(a, id, 	"id");
 		Dbo::field(a, title, 	"Title");
 		Dbo::field(a, mark,     "Mark");
 		Dbo::field(a, year,     "Year");
@@ -102,6 +101,36 @@ class Book{
 	  }
 };
 
+class Book1{
+	public:
+	std::string title;
+	int mark;
+	int year;
+	int numInSeria;
+	int numMarks;
+	std::string description;
+	
+	Dbo::ptr<Author> author;
+	Dbo::ptr<Genre> genre;
+	Dbo::ptr<Seria> seria;
+	Author author_;
+	Genre genre_;
+	Seria seria_;
+	
+	template<class Action>
+  	void persist(Action& a)
+	  {
+		Dbo::field(a, title, 	"Title");
+		Dbo::field(a, mark,     "Mark");
+		Dbo::field(a, year,     "Year");
+		Dbo::belongsTo(a, author, "Author");
+		Dbo::field(a, numMarks, "NumMarks");
+		Dbo::belongsTo(a, genre, "Genre");
+		Dbo::belongsTo(a, seria, "Seria");
+		Dbo::field(a, numInSeria, "NumInSeria");
+		Dbo::field(a, description, "Description");
+	  }
+};
 
 
 #endif

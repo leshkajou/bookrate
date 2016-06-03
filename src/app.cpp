@@ -135,7 +135,7 @@ void App::addYourMark(){
 }
 
 void App::printDocs(){
-	page->setContentText("Test:");
+	//page->setContentText("Test:");
 }
 
 /**

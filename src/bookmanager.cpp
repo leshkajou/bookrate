@@ -69,7 +69,7 @@ void BookManager::updateRate(int id, int plusmark){
 */
 void BookManager::addBook(std::string title, std::string author, std::string years, std::string genre,  
 						  int year, std::string seria, int numOfBooks, int numInSeria, int mark){
-		//mapping and setting session with db
+		
 		Dbo::backend::Sqlite3 database(WApplication::instance()->docRoot() + "/db/bookrate.db");
 		Dbo::Session session;
 		session.setConnection(database);
@@ -109,6 +109,7 @@ void BookManager::addBook(std::string title, std::string author, std::string yea
 		book->year=year;
 		book->numInSeria=numInSeria;
 		book->description="!";
+		book->numMarks=1;
 		//book->author.id();
 		Dbo::ptr <Book> newBook=session.add(book);
 		
